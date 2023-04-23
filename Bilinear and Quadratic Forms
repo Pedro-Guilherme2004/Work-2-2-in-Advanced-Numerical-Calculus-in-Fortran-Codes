@@ -1,0 +1,46 @@
+PROGRAM bilinear_and_quadratic_forms
+    IMPLICIT NONE
+    REAL :: x, y, bilinear_form, quadratic_form
+
+    ! Define the bilinear form
+    INTERFACE
+        FUNCTION bilinear_form_f(x, y)
+            REAL :: x, y
+            REAL :: bilinear_form_f
+        END FUNCTION bilinear_form_f
+    END INTERFACE
+
+    ! Define the quadratic form
+    INTERFACE
+        FUNCTION quadratic_form_f(x)
+            REAL :: x
+            REAL :: quadratic_form_f
+        END FUNCTION quadratic_form_f
+    END INTERFACE
+
+    ! Initialize user inputs
+    PRINT *, "Enter x value: "
+    READ *, x
+    PRINT *, "Enter y value: "
+    READ *, y
+
+    ! Calculate bilinear and quadratic forms
+    bilinear_form = bilinear_form_f(x, y)
+    quadratic_form = quadratic_form_f(x)
+
+    ! Print the results
+    PRINT *, "Bilinear form: ", bilinear_form
+    PRINT *, "Quadratic form: ", quadratic_form
+
+
+END PROGRAM bilinear_and_quadratic_forms
+
+FUNCTION bilinear_form_f(x, y)
+    REAL :: x, y
+    bilinear_form_f = x * y
+END FUNCTION bilinear_form_f
+
+FUNCTION quadratic_form_f(x)
+    REAL :: x
+    quadratic_form_f = x**2
+END FUNCTION quadratic_form_f
