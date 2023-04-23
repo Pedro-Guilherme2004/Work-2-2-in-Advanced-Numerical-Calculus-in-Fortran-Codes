@@ -1,0 +1,45 @@
+PROGRAM euler_lagrange
+    IMPLICIT NONE
+    REAL :: a, b, h, x, dL_dx, dL_du, dL_dudx,replace
+    INTEGER :: max_iter, iter
+
+    ! Define the Lagrangian L(x, u, u') and its partial derivatives
+    INTERFACE
+        FUNCTION L(x, u, uprime)
+            REAL :: x, u, uprime
+        END FUNCTION L
+    END INTERFACE
+
+    ! Initialize user inputs
+    PRINT *, "Enter interval [a, b]: "
+    READ *, a, b
+    PRINT *, "Enter step size (h): "
+    READ *, h
+    PRINT *, "Enter maximum number of iterations: "
+    READ *, max_iter
+
+    ! Euler-Lagrange equation: dL/du - d/dx(dL/du') = 0
+    x = a
+    iter = 0
+    DO WHILE (x <= b .AND. iter < max_iter)
+        replace = L(x, 0.0, 0.0) ! Replace 0.0 with the actual values of u and u' if needed
+        dL_dx = (L(x + h, 0.0, 0.0) - L(x - h, 0.0, 0.0)) / (2 * h)
+        dL_du = (L(x, h, 0.0) - L(x, -h, 0.0)) / (2 * h)
+        dL_dudx = (L(x, 0.0, h) - L(x, 0.0, -h)) / (2 * h)
+
+        ! Print the Euler-Lagrange equation components
+        PRINT *, "x: ", x, " dL/du: ", dL_du, " dL/du': ", dL_dudx, " dL/dx: ", dL_dx
+
+        x = x + h
+        iter = iter + 1
+    END DO
+
+    PRINT *, "Iterations: ", iter
+
+END PROGRAM euler_lagrange
+
+FUNCTION L(x, u, uprime)
+    REAL :: x, u, uprime
+    L = x**2 + u**2 + uprime**2
+END FUNCTION L
+
