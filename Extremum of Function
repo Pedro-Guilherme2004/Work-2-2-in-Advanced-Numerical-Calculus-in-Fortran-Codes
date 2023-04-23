@@ -1,0 +1,54 @@
+PROGRAM extremum_of_function
+    IMPLICIT NONE
+    REAL :: x, y, h, fx, fx_plus_h, fx_minus_h, extremum
+    INTEGER :: max_iter, iter
+
+    ! Define the function
+    INTERFACE
+        FUNCTION f(x)
+            REAL :: x
+            REAL :: f
+        END FUNCTION f
+    END INTERFACE
+
+    ! Initialize user inputs
+    PRINT *, "Enter initial x value: "
+    READ *, x
+    PRINT *, "Enter step size (h): "
+    READ *, h
+    PRINT *, "Enter maximum number of iterations: "
+    READ *, max_iter
+
+    ! Find extremum using central difference method
+    iter = 0
+    DO WHILE (iter < max_iter)
+        fx = f(x)
+        fx_plus_h = f(x + h)
+        fx_minus_h = f(x - h)
+
+        ! Check for local maximum
+        IF (fx_minus_h < fx .AND. fx > fx_plus_h) THEN
+            extremum = x
+            EXIT
+        ! Check for local minimum
+        ELSE IF (fx_minus_h > fx .AND. fx < fx_plus_h) THEN
+            extremum = x
+            EXIT
+        ELSE
+            x = x + h
+        END IF
+        iter = iter + 1
+    END DO
+
+    ! Print the result
+    PRINT *, "Extremum found at x: ", extremum
+    PRINT *, "Function value at extremum: ", f(extremum)
+    PRINT *, "Iterations: ", iter
+
+
+END PROGRAM extremum_of_function
+
+FUNCTION f(x)
+    REAL :: x
+    f = -x**2 + 4*x - 3
+END FUNCTION f
