@@ -1,0 +1,42 @@
+PROGRAM increments_and_variations
+    IMPLICIT NONE
+    REAL :: x, delta_x, f_x, f_x_plus_delta_x, increment, variation
+    INTEGER :: i, num_steps
+
+    ! Define the function for which increments and variations are to be calculated
+    INTERFACE
+        FUNCTION function_f(x)
+            REAL :: x
+            REAL :: function_f
+        END FUNCTION function_f
+    END INTERFACE
+
+    ! Initialize user inputs
+    PRINT *, "Enter x value: "
+    READ *, x
+    PRINT *, "Enter delta x: "
+    READ *, delta_x
+    PRINT *, "Enter number of steps: "
+    READ *, num_steps
+
+    ! Calculate increments and variations
+    f_x = function_f(x)
+    PRINT *, "Step | x Value | Function Value | Increment | Variation"
+    DO i = 1, num_steps
+        x = x + delta_x
+        f_x_plus_delta_x = function_f(x)
+        increment = f_x_plus_delta_x - f_x
+        variation = increment / delta_x
+
+        PRINT "(I3, F10.2, F16.2, F12.2, F12.2)", i, x, f_x_plus_delta_x, increment, variation
+        f_x = f_x_plus_delta_x
+    END DO
+
+
+END PROGRAM increments_and_variations
+
+ FUNCTION function_f(x)
+        REAL :: x
+        function_f = x**2 - 3 * x + 2
+ END FUNCTION function_f
+
