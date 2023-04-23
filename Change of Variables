@@ -1,0 +1,36 @@
+! Variable changes with comments and with user input in Fortran
+
+program main
+    implicit none
+    real :: a, b, x0, x1
+
+    ! Read user input
+    print *, "Enter the values of a, b, x0, and x1:"
+    read *, a, b, x0, x1
+
+    ! Change of variables example
+    call change_of_variables_example(a, b, x0, x1)
+
+contains
+
+    subroutine change_of_variables_example(a, b, x0, x1)
+        real, intent(in) :: a, b, x0, x1
+        real :: transformed_x0, transformed_x1, result
+
+        ! Change of variables example: Integrate exp(ax) from x0 to x1
+        ! Perform the change of variables: u = ax, du = a dx
+        ! Then integrate exp(u) du/a from ax0 to ax1
+
+        transformed_x0 = a * x0
+        transformed_x1 = a * x1
+
+        ! Implement the integration method (e.g., trapezoidal rule, Simpson's rule, etc.)
+        ! For demonstration purposes, the details are omitted
+        ! The result should be stored in the variable 'result'
+
+        print *, "Change of Variables Example: Integrate exp(ax) from x0 to x1"
+        print *, "a = ", a, ", b = ", b, ", x0 = ", x0, ", x1 = ", x1
+        print *, "Transformed limits: u0 = ", transformed_x0, ", u1 = ", transformed_x1
+    end subroutine change_of_variables_example
+
+end program main
