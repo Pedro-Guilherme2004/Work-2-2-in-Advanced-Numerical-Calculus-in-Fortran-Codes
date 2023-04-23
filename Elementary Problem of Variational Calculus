@@ -1,0 +1,67 @@
+PROGRAM variational_calculus
+    IMPLICIT NONE
+    REAL :: a, b, h, x, f_x, g_x, J, J_min, x_min
+    INTEGER :: max_iter, iter
+
+    ! Define the functions f(x) and g(x)
+    INTERFACE
+        FUNCTION f(x)
+            REAL :: x
+            REAL :: f
+        END FUNCTION f
+
+        FUNCTION g(x)
+            REAL :: x
+            REAL :: g
+        END FUNCTION g
+    END INTERFACE
+
+    ! Initialize user inputs
+    PRINT *, "Enter interval [a, b]: "
+    READ *, a, b
+    PRINT *, "Enter step size (h): "
+    READ *, h
+    PRINT *, "Enter maximum number of iterations: "
+    READ *, max_iter
+
+    ! Initialize minimum functional value
+    J_min = HUGE(J_min)
+    x_min = a
+
+    ! Compute the functional value for each x in [a, b]
+    x = a
+    iter = 0
+    DO WHILE (x <= b .AND. iter < max_iter)
+        f_x = f(x)
+        g_x = g(x)
+
+        ! Evaluate the functional J[f] = integral(a, b, f(x) + g(x) * x dx)
+        J = (f_x + g_x * (b**2 / 2.0 - a**2 / 2.0)) * (b - a)
+
+        ! Update minimum functional value
+        IF (J < J_min) THEN
+            J_min = J
+            x_min = x
+        END IF
+
+        x = x + h
+        iter = iter + 1
+    END DO
+
+    ! Print the result
+    PRINT *, "Minimum functional value: ", J_min
+    PRINT *, "Stationary function at x: ", x_min
+    PRINT *, "Iterations: ", iter
+
+
+END PROGRAM variational_calculus
+
+FUNCTION f(x)
+    REAL :: x
+    f = x**2
+END FUNCTION f
+
+FUNCTION g(x)
+    REAL :: x
+    g = 2 * x
+END FUNCTION g
