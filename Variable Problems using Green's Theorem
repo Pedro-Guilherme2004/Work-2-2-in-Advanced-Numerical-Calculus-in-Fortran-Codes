@@ -1,0 +1,58 @@
+program green_theorem
+    implicit none
+    real :: x1, x2, y1, y2, dx, dy
+    real :: integral_line, integral_green
+    integer :: num_segments, i
+    real, external :: vector_field_x, vector_field_y, partial_x, partial_y
+
+    ! Read user input
+    print *, "Digite os limites do intervalo no eixo x (x1, x2):"
+    read *, x1, x2
+    print *, "Digite os limites do intervalo no eixo y (y1, y2):"
+    read *, y1, y2
+    print *, "Digite o número de segmentos para discretizar a integral:"
+    read *, num_segments
+
+    ! Calculate the Green's theorem
+    integral_line = 0.0
+    dx = (x2 - x1) / num_segments
+    dy = (y2 - y1) / num_segments
+
+    do i = 1, num_segments
+        x1 = x1 + dx
+        y1 = y1 + dy
+
+        integral_line = integral_line + (vector_field_x(x1, y1) * dx + vector_field_y(x1, y1) * dy)
+    end do
+
+    integral_green = integral_line
+
+    ! Display the result
+    print *, "Resultado da integral usando o Teorema de Green:", integral_green
+
+
+end program green_theorem
+
+! Define the x-component of the vector field
+    real function vector_field_x(x, y)
+        real, intent(in) :: x, y
+        vector_field_x = y
+    end function vector_field_x
+
+    ! Define the y-component of the vector field
+    real function vector_field_y(x, y)
+        real, intent(in) :: x, y
+        vector_field_y = -x
+    end function vector_field_y
+
+    ! Define the partial derivative of vector_field_x with respect to x
+    real function partial_x(x, y)
+        real, intent(in) :: x, y
+        partial_x = 0.0
+    end function partial_x
+
+    ! Define the partial derivative of vector_field_y with respect to y
+    real function partial_y(x, y)
+        real, intent(in) :: x, y
+        partial_y = 0.0
+    end function partial_y
