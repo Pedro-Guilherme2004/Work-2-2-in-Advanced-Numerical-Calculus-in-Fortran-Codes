@@ -1,0 +1,60 @@
+PROGRAM bilinear_quadratic_and_line_integral
+    IMPLICIT NONE
+    REAL :: x, y, x1, x2, y1, y2, dx, dy
+    REAL :: bilinear_form, quadratic_form, line_integral
+    INTEGER :: num_segments, i
+
+    INTERFACE
+        FUNCTION bilinear_form_f(x, y)
+            REAL :: x, y
+            REAL :: bilinear_form_f
+        END FUNCTION bilinear_form_f
+    END INTERFACE
+
+    INTERFACE
+        FUNCTION quadratic_form_f(x)
+            REAL :: x
+            REAL :: quadratic_form_f
+        END FUNCTION quadratic_form_f
+    END INTERFACE
+
+    PRINT *, "Enter x and y values: "
+    READ *, x, y
+
+    bilinear_form = bilinear_form_f(x, y)
+    quadratic_form = quadratic_form_f(x)
+
+    PRINT *, "Bilinear form: ", bilinear_form
+    PRINT *, "Quadratic form: ", quadratic_form
+
+    PRINT *, "Enter the limits of the interval on the x-axis (x1, x2):"
+    READ *, x1, x2
+    PRINT *, "Enter the limits of the interval on the y-axis (y1, y2):"
+    READ *, y1, y2
+    PRINT *, "Enter the number of segments to discretize the integral:"
+    READ *, num_segments
+
+    line_integral = 0.0
+    dx = (x2 - x1) / num_segments
+    dy = (y2 - y1) / num_segments
+
+    DO i = 1, num_segments
+        x1 = x1 + dx
+        y1 = y1 + dy
+
+        line_integral = line_integral + (bilinear_form_f(x1, y1) * dx + quadratic_form_f(x1) * dy)
+    END DO
+
+    PRINT *, "Line integral: ", line_integral
+
+END PROGRAM bilinear_quadratic_and_line_integral
+
+ FUNCTION bilinear_form_f(x, y)
+        REAL :: x, y
+        bilinear_form_f = x * y
+    END FUNCTION bilinear_form_f
+
+    FUNCTION quadratic_form_f(x)
+        REAL :: x
+        quadratic_form_f = x**2
+    END FUNCTION quadratic_form_f
