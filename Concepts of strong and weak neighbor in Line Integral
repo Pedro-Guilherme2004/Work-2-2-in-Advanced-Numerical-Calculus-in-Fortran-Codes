@@ -1,0 +1,55 @@
+program neighborhoods_and_line_integral
+    implicit none
+    real :: x1, x2, y1, y2, dx, dy
+    real :: integral_line
+    integer :: num_segments, i
+    character(len=1) :: neighborhood_type
+    real, external :: vector_field_x, vector_field_y
+
+    ! Read user input
+    print *, "Digite os limites do intervalo no eixo x (x1, x2):"
+    read *, x1, x2
+    print *, "Digite os limites do intervalo no eixo y (y1, y2):"
+    read *, y1, y2
+    print *, "Digite o número de segmentos para discretizar a integral:"
+    read *, num_segments
+    print *, "Digite 'F' para vizinhança forte ou 'f' para vizinhança fraca:"
+    read *, neighborhood_type
+
+    ! Calculate the line integral
+    integral_line = 0.0
+    dx = (x2 - x1) / num_segments
+    dy = (y2 - y1) / num_segments
+
+    do i = 1, num_segments
+        x1 = x1 + dx
+        y1 = y1 + dy
+
+        if (neighborhood_type == 'F') then
+            integral_line = integral_line + (vector_field_x(x1, y1) * dx + vector_field_y(x1, y1) * dy)
+        else
+            integral_line = integral_line - (vector_field_x(x1, y1) * dx + vector_field_y(x1, y1) * dy)
+        end if
+    end do
+
+    ! Display the result
+    if (neighborhood_type == 'F') then
+        print *, "Resultado da integral de linha na vizinhança forte:", integral_line
+    else
+        print *, "Resultado da integral de linha na vizinhança fraca:", integral_line
+    end if
+
+
+end program neighborhoods_and_line_integral
+
+! Define the x-component of the vector field
+    real function vector_field_x(x, y)
+        real, intent(in) :: x, y
+        vector_field_x = y
+    end function vector_field_x
+
+    ! Define the y-component of the vector field
+    real function vector_field_y(x, y)
+        real, intent(in) :: x, y
+        vector_field_y = -x
+    end function vector_field_y
